@@ -42,8 +42,5 @@
         </div>
       @endif
     </div>
-    <div class="card my-5 p-5 shadow">
-
-    </div>
   </div>
 @endsection

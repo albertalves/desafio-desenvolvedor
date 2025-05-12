@@ -14,5 +14,7 @@ Route::controller(FileDataController::class)->group(function () {
     Route::get('/data', 'getList')->name('file-data.list');
 });
 
-
+Route::controller(FileHistoryController::class)->group(function () {
+    Route::get('/history', 'index')->name('file-history.index');
+});
 
