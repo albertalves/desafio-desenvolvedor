@@ -12,6 +12,7 @@ class FileDataImport implements OnEachRow, WithChunkReading
     private $fileHistoryId;
     private $dataToInsert = [];
     private $batchSize = 7500; // Tamanho do lote para inserção
+    private $isFirstRow = true; // Variável para rastrear a primeira linha
 
     public function __construct($fileHistoryId)
     {
@@ -20,15 +21,21 @@ class FileDataImport implements OnEachRow, WithChunkReading
 
     public function onRow(Row $row)
     {
+        // Ignorar a primeira linha (cabeçalho)
+        if ($this->isFirstRow) {
+            $this->isFirstRow = false;
+            return;
+        }
+
         $rowData = $row->toArray();
 
         $this->dataToInsert[] = [
-            'rpt_dt'            => $rowData['RptDt'] ?? null,
-            'tckr_symb'         => $rowData['TckrSymb'] ?? null,
-            'mkt_nm'            => $rowData['MktNm'] ?? null,
-            'scty_ctgy_nm'      => $rowData['SctyCtgyNm'] ?? null,
-            'isin'              => $rowData['ISIN'] ?? null,
-            'crpn_mm'           => $rowData['CrpnNm'] ?? null,
+            'rpt_dt'            => $rowData[0],
+            'tckr_symb'         => $rowData[1],
+            'mkt_nm'            => $rowData[5],
+            'scty_ctgy_nm'      => $rowData[6],
+            'isin'              => $rowData[15],
+            'crpn_mm'           => $rowData[47],
             'file_history_id'   => $this->fileHistoryId,
         ];
 
