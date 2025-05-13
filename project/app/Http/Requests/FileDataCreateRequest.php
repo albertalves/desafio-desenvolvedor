@@ -14,7 +14,7 @@ class FileDataCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|mimes:csv,txt'
+            'file' => 'required|mimes:csv,txt,xls,xlsx',
         ];
     }
 

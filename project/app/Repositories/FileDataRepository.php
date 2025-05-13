@@ -6,7 +6,6 @@ use App\Jobs\ImportFileJob;
 use App\Models\FileData;
 use App\Models\FileHistory;
 use App\Interfaces\FileDataRepositoryInterface;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -31,11 +30,10 @@ class FileDataRepository implements FileDataRepositoryInterface
             }
 
             $fileName    = $data['file']->getClientOriginalName();
-            $path        = $data['file']->storeAs('uploads', $fileName);
             $fileHistory = FileHistory::create(['name' => $fileName]);
 
             // Processar o arquivo diretamente
-            $job = new ImportFileJob($path, $fileHistory);
+            $job = new ImportFileJob($data['file'], $fileHistory);
             $job->handle(); // Executa o job diretamente
 
             DB::commit();

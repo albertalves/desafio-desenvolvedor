@@ -2,26 +2,28 @@
 
 namespace App\Jobs;
 
+use App\Imports\FileDataImport;
 use App\Models\FileData;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use League\Csv\Reader;
 use League\Csv\SyntaxError;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ImportFileJob implements ShouldQueue
 {
     use Queueable;
 
-    protected $filePath;
+    protected $file;
     protected $fileHistory;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($filePath, $fileHistory)
+    public function __construct($file, $fileHistory)
     {
-        $this->filePath = $filePath;
+        $this->file = $file;
         $this->fileHistory = $fileHistory;
     }
 
@@ -30,8 +32,22 @@ class ImportFileJob implements ShouldQueue
      */
     public function handle(): void
     {
+        $extension = $this->file->getClientOriginalExtension();
+
+        if (in_array($extension, ['xls', 'xlsx'])) { 
+            $this->importXlsx();
+        } else {
+            $this->importCsv();
+        }
+
+    }
+
+    private function importCsv()
+    {
         try {
-            $csv = Reader::createFromPath(storage_path('app/private/' . $this->filePath), 'r');
+            $path = $this->file->storeAs('uploads', $this->file->getClientOriginalName());
+
+            $csv = Reader::createFromPath(storage_path('app/private/' . $path), 'r');
             $csv->setDelimiter(',');
             $csv->setHeaderOffset(0);
 
@@ -62,6 +78,12 @@ class ImportFileJob implements ShouldQueue
                 FileData::insert($dataToInsert);
             }
 
+        } catch (\Exception $e) {
+
+            Log::error('Erro ao processar o arquivo: ' . $e->getMessage());
+
+            throw new \Exception('Erro ao processar o arquivo: ' . $e->getMessage());
+            
         } catch (SyntaxError $e) {
 
             Log::error('Erro ao processar o arquivo CSV: ' . $e->getMessage());
@@ -74,6 +96,20 @@ class ImportFileJob implements ShouldQueue
 
             throw $th;
 
+        }
+    }
+
+    private function importXlsx()
+    {
+        try {
+            $result = Excel::import(new FileDataImport($this->fileHistory->id), $this->file);
+
+            Log::info('Importação XLS/XLSX concluída.', ['result' => $result]);
+
+            return $result;
+        } catch (\Throwable $th) {
+            Log::error('Erro ao importar arquivo XLS/XLSX: ' . $th->getMessage());
+            throw $th;
         }
     }
 }

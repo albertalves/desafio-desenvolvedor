@@ -28,7 +28,7 @@
       <form action="{{ route('file-data.import') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="input-group my-4">
-          <input type="file" class="form-control" id="file" name="file" accept=".csv">
+          <input type="file" class="form-control" id="file" name="file">
           <button type="submit" class="btn btn-outline-success">
             Importar
           </button>
