@@ -2,6 +2,19 @@
 
 @section('content')
   <div class="container">
+    @if(auth()->check())
+      <div class="mt-5 text-center">
+        <h1>Olá {{ auth()->user()->name }}, Bem-vindo ao sistema de importação de dados!</h1>
+        <p>
+          Este sistema permite importar arquivos CSV e visualizar os dados
+          importados.
+        </p>
+        <form action="{{ route('logout') }}" method="POST">
+          @csrf
+          <button type="submit" class="btn btn-outline-danger">Sair</button>
+        </form>
+      </div>
+    @endif
     <div class="card my-5 p-5 shadow">
       <div class="d-flex justify-content-between">
         <h3>Importar Arquivo</h3>
