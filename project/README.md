@@ -56,5 +56,11 @@ Rodar migrations
 php artisan migrate
 ```
 
+
+Rodar seed para criar usuário inicial
+```sh
+php artisan db:seed
+```
+
 Acessar o projeto
 [http://localhost:8989](http://localhost:8989)
