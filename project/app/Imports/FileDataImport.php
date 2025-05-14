@@ -15,9 +15,7 @@ class FileDataImport implements OnEachRow, WithChunkReading
 
     public function __construct(
         private $fileHistoryId
-    ) {
-        $this->fileHistoryId = $fileHistoryId;
-    }
+    ) {}
 
     public function onRow(Row $row)
     {

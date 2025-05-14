@@ -9,9 +9,7 @@ class FileHistoryController extends Controller
 {
     public function __construct(
         private FileHistoryService $fileHistoryService
-    ){
-        $this->fileHistoryService = $fileHistoryService;
-    }
+    ) {}
 
     public function index(FileHistoryFilterRequest $request): \Illuminate\View\View
     {

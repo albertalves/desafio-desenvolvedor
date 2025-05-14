@@ -14,9 +14,7 @@ class FileDataRepository implements FileDataRepositoryInterface
 {
     public function __construct(
         private FileData $model
-    ) {
-        $this->model = $model;
-    }
+    ) {}
 
     public function import(array $data): void
     {

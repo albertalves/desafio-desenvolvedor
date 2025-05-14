@@ -10,9 +10,7 @@ class FileHistoryRepository implements FileHistoryRepositoryInterface
 {
     public function __construct(
         private FileHistory $model
-    ) {
-        $this->model = $model;
-    }
+    ) {}
 
     public function getList(Array $data): array
     {

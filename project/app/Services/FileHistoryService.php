@@ -8,9 +8,7 @@ class FileHistoryService
 {
     public function __construct(
         private FileHistoryRepository $repository
-    ) {
-        $this->repository = $repository;
-    }
+    ) {}
 
     public function getList(Array $data): array
     {

@@ -8,9 +8,7 @@ class FileDataService
 {
     public function __construct(
         private FileDataRepository $repository
-    ) {
-        $this->repository = $repository;
-    }
+    ) {}
 
     public function importData(Array $data): void
     {
