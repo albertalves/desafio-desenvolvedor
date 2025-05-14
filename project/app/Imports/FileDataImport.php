@@ -9,13 +9,13 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 class FileDataImport implements OnEachRow, WithChunkReading
 {
-    private $fileHistoryId;
     private $dataToInsert = [];
     private $batchSize = 7500; // Tamanho do lote para inserção
     private $isFirstRow = true; // Variável para rastrear a primeira linha
 
-    public function __construct($fileHistoryId)
-    {
+    public function __construct(
+        private $fileHistoryId
+    ) {
         $this->fileHistoryId = $fileHistoryId;
     }
 

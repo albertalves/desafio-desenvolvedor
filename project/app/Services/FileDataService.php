@@ -6,19 +6,18 @@ use App\Repositories\FileDataRepository;
 
 class FileDataService
 {
-    private $repository;
-
-    public function __construct(FileDataRepository $repository)
-    {
+    public function __construct(
+        private FileDataRepository $repository
+    ) {
         $this->repository = $repository;
     }
 
-    public function importData(Array $data)
+    public function importData(Array $data): void
     {
-        return $this->repository->import($data);
+        $this->repository->import($data);
     }
 
-    public function getList(Array $data)
+    public function getList(Array $data): array
     {
         return $this->repository->getList($data);
     }

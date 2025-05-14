@@ -12,14 +12,13 @@ use Illuminate\Support\Facades\Log;
 
 class FileDataRepository implements FileDataRepositoryInterface
 {
-    protected $model;
-
-    public function __construct(FileData $model)
-    {
+    public function __construct(
+        private FileData $model
+    ) {
         $this->model = $model;
     }
 
-    public function import(array $data)
+    public function import(array $data): void
     {
         DB::beginTransaction();
 
@@ -71,7 +70,7 @@ class FileDataRepository implements FileDataRepositoryInterface
         }
     }
 
-    public function getList(array $data)
+    public function getList(array $data): array
     {
         try {
 

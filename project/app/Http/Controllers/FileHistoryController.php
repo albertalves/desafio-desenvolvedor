@@ -7,14 +7,13 @@ use App\Services\FileHistoryService;
 
 class FileHistoryController extends Controller
 {
-    private $fileHistoryService;
-
-    public function __construct(FileHistoryService $fileHistoryService)
-    {
+    public function __construct(
+        private FileHistoryService $fileHistoryService
+    ){
         $this->fileHistoryService = $fileHistoryService;
     }
 
-    public function index(FileHistoryFilterRequest $request)
+    public function index(FileHistoryFilterRequest $request): \Illuminate\View\View
     {
         $result = $this->fileHistoryService->getList($request->validated());
 

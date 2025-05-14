@@ -8,7 +8,7 @@ interface FileDataRepositoryInterface
 {
     public function __construct(FileData $model);
 
-    public function import(array $data);
+    public function import(array $data): void;
 
-    public function getList(array $data);
+    public function getList(array $data): array;
 }

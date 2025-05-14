@@ -8,14 +8,13 @@ use Illuminate\Support\Facades\Log;
 
 class FileHistoryRepository implements FileHistoryRepositoryInterface
 {
-    protected $model;
-
-    public function __construct(FileHistory $model)
-    {
+    public function __construct(
+        private FileHistory $model
+    ) {
         $this->model = $model;
     }
 
-    public function getList(Array $data)
+    public function getList(Array $data): array
     {
         try {
 

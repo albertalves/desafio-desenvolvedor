@@ -8,5 +8,5 @@ interface FileHistoryRepositoryInterface
 {
     public function __construct(FileHistory $model);
 
-    public function getList(Array $data);
+    public function getList(Array $data): array;
 }

@@ -15,14 +15,13 @@ class ImportFileJob implements ShouldQueue
 {
     use Queueable;
 
-    protected $file;
-    protected $fileHistory;
-
     /**
      * Create a new job instance.
      */
-    public function __construct($file, $fileHistory)
-    {
+    public function __construct(
+        private $file,
+        private $fileHistory
+    ) {
         $this->file = $file;
         $this->fileHistory = $fileHistory;
     }
@@ -42,7 +41,7 @@ class ImportFileJob implements ShouldQueue
 
     }
 
-    private function importCsv()
+    private function importCsv(): void
     {
         try {
             $path = $this->file->storeAs('uploads', $this->file->getClientOriginalName());
@@ -99,14 +98,11 @@ class ImportFileJob implements ShouldQueue
         }
     }
 
-    private function importXlsx()
+    private function importXlsx(): void
     {
         try {
             $result = Excel::import(new FileDataImport($this->fileHistory->id), $this->file);
-
             Log::info('Importação XLS/XLSX concluída.', ['result' => $result]);
-
-            return $result;
         } catch (\Throwable $th) {
             Log::error('Erro ao importar arquivo XLS/XLSX: ' . $th->getMessage());
             throw $th;
